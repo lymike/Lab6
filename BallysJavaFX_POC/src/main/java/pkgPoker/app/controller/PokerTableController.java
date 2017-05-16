@@ -296,14 +296,14 @@ public class PokerTableController implements Initializable {
 			
 			pathT.setPath(path);
 			
-			FadeTransition fadeT = new FadeTransition(Duration.millis(400), img);
+			FadeTransition fadeT = new FadeTransition(Duration.millis(200), img);
 			fadeT.setFromValue(1.0);
 			fadeT.setToValue(0);
 			fadeT.setCycleCount(2);
 			fadeT.setAutoReverse(true);
 			fadeT.setDelay(Duration.millis(0));
 			
-			FadeTransition fadeT2 = new FadeTransition(Duration.millis(350), img);
+			FadeTransition fadeT2 = new FadeTransition(Duration.millis(50), img);
 			fadeT2.setFromValue(1.0);
 			fadeT2.setToValue(0);
 			fadeT2.setCycleCount(1);
