@@ -22,6 +22,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -33,9 +34,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurve;
 import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.scene.shape.QuadCurve;
 import javafx.util.Duration;
 import pkgPoker.app.MainApp;
 
@@ -256,12 +259,60 @@ public class PokerTableController implements Initializable {
 			TranslateTransition transT = CreateTranslateTransition(pntDeck, pntCardDealt, img);
 
 			RotateTransition rotT = CreateRotateTransition(img);
+			rotT.setFromAngle(0);
+			rotT.setToAngle(360);
+			rotT.setCycleCount(5);
+			rotT.setAxis(new Point3D(5, 5, 5));
+			
 			ScaleTransition scaleT = CreateScaleTransition(img);
+			scaleT.setCycleCount(2);
+			scaleT.setAutoReverse(true);
+			scaleT.setByX(1.5);
+			scaleT.setByY(1.5);
+		     
 			PathTransition pathT = CreatePathTransition(pntDeck,
 			 pntCardDealt, img);
+			QuadCurve path = new QuadCurve();
+			int pos = iPosition;
+			switch (pos) {
+			case 1:
+				path.setStartX(50);
+				path.setStartY(OuterBorderPane.getHeight()/2-50);
+				path.setEndX(pntCardDealt.getX());
+				path.setEndY(pntCardDealt.getY());
+				path.setControlX(OuterBorderPane.getWidth());
+				path.setControlY(OuterBorderPane.getHeight()/2);
+				break;
+			
+			case 2:
+				path.setStartX(50);
+				path.setStartY(OuterBorderPane.getHeight()/2-50);
+				path.setEndX(pntCardDealt.getX());
+				path.setEndY(pntCardDealt.getY());
+				path.setControlX(OuterBorderPane.getWidth());
+				path.setControlY(OuterBorderPane.getHeight()/2);
+				break;
+			}
+			
+			pathT.setPath(path);
+			
+			FadeTransition fadeT = new FadeTransition(Duration.millis(400), img);
+			fadeT.setFromValue(1.0);
+			fadeT.setToValue(0);
+			fadeT.setCycleCount(2);
+			fadeT.setAutoReverse(true);
+			fadeT.setDelay(Duration.millis(0));
+			
+			FadeTransition fadeT2 = new FadeTransition(Duration.millis(350), img);
+			fadeT2.setFromValue(1.0);
+			fadeT2.setToValue(0);
+			fadeT2.setCycleCount(1);
+			fadeT2.setAutoReverse(false);
+			fadeT2.setDelay(Duration.millis(1000));
+			
 
-			ParallelTransition patTMoveRot = new ParallelTransition();
-			patTMoveRot.getChildren().addAll(rotT, pathT);
+			ParallelTransition patTMoveRot = new ParallelTransition(scaleT, pathT, fadeT, fadeT2, rotT);
+			// patTMoveRot.getChildren().addAll(rotT, pathT);
 			// patTMoveRot.getChildren().addAll(pathT, rotT);
 
 			ParallelTransition patTFadeInFadeOut = createFadeTransition(
